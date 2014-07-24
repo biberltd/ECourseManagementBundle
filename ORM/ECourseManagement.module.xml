@@ -1,0 +1,484 @@
+<?xml version="1.0"?>
+<skipper version="3.0.0.1104" mvc="Symfony2" orm="Doctrine2">
+  <module name="ECourseManagementtBundle" import-format="Doctrine2Php" import-path="../Entity" uuid="da1c9014-34a6-4d54-85c8-5de226fc3f68">
+    <entity name="Course" description="Keeps track of course definitions." uuid="b452d072-4e48-4932-8f9f-d1ec3a658e72">
+      <field name="id" description="System given id." type="integer" size="10" required="true" unique="true" primary="true" auto-increment="true" uuid="fd99d988-3afc-42d7-9e2a-4f688361316c">
+        <orm-attributes>
+          <attribute name="generator">
+            <attribute name="strategy">AUTO</attribute>
+          </attribute>
+        </orm-attributes>
+      </field>
+      <field name="date_added" description="Date when the course is added." type="datetime" required="true" uuid="55e2ea6d-eddc-4596-8170-53e5e8c299da"/>
+      <field name="date_published" description="Date when the course is to be published." type="datetime" required="true" uuid="d777c6a2-1e1a-4e01-802c-772b8c3d8932"/>
+      <field name="date_unpublished" description="Date when the course is to be unpublished." type="datetime" uuid="a6d91ca1-16cd-4a9a-9b49-d05675ee1939"/>
+      <field name="sort_order" description="Custom sort order." type="integer" size="10" default="1" required="true" uuid="fa7767a6-19e2-43ea-a100-67210bf49cf1"/>
+      <field name="description" description="Course description." type="text" uuid="a37c5113-37c0-4884-b657-15c2d1ab93cb"/>
+      <field name="preview_image" description="Preview image of the course." type="integer" size="10" uuid="7918e8fc-c15d-49e4-9b1c-f651d148e925"/>
+      <field name="site" description="Site that course belongs to." type="integer" size="10" required="true" uuid="eddda909-7257-4b76-a027-87ad08962ee2"/>
+      <field name="creator" description="Creator of the course." type="integer" size="10" required="true" uuid="c6c2aec3-5275-4a57-bfab-8a59caf2f86c"/>
+      <field name="count_lessons" description="Number of lessons associated with this course." type="integer" size="10" default="0" required="true" uuid="3c665316-ecaf-48e4-afeb-54b5a16461b8"/>
+      <index name="idx_u_course_id" unique="true">
+        <index-field name="id"/>
+      </index>
+      <index name="idx_n_course_date_added">
+        <index-field name="date_added"/>
+      </index>
+      <index name="idx_n_course_date_published">
+        <index-field name="date_published"/>
+      </index>
+      <index name="idx_n_course_date_unpublished">
+        <index-field name="date_unpublished"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">course</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="Course" to="Member" caption="idx_f_course_creator" inverse-alias="member" uuid="e782482c-ed52-41e1-9e0c-b39e785fd266">
+      <association-field from="creator" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="Course" to="Site" caption="idx_f_course_site" inverse-alias="site" uuid="ec5b35be-99eb-4f45-8fb8-9bfda63d0049">
+      <association-field from="site" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="CourseLocalization" description="Holds localized values of courses." uuid="10848c12-504b-4a54-b9d1-65c596877cfc">
+      <field name="course" description="Localized course." type="integer" size="10" required="true" primary="true" uuid="809a9f30-7231-4a46-a46c-941a85dbd70b"/>
+      <field name="language" description="Localization language" type="integer" size="5" required="true" primary="true" uuid="bfdb5de6-489c-424a-8043-9e19057a606e"/>
+      <field name="name" description="Localized course name." type="string" size="155" required="true" uuid="33a2f798-0b0a-4b1a-9a14-168929bb57cf"/>
+      <field name="url_key" description="Localized url key of course." type="string" size="255" required="true" uuid="ffea1fe2-d959-418c-ac14-8602ad621c27"/>
+      <field name="description" description="Localized course description." type="text" uuid="9ccc308c-5616-49b2-8a4d-d8f01e4fc389"/>
+      <index name="idx_u_course_localization" unique="true">
+        <index-field name="course"/>
+        <index-field name="language"/>
+      </index>
+      <index name="idx_u_course_localization_url_key" unique="true">
+        <index-field name="course"/>
+        <index-field name="language"/>
+        <index-field name="url_key"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">course_localization</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="CourseLocalization" to="Language" caption="idx_f_couse_localization_language" inverse-alias="language" uuid="143bad59-b2df-41e0-888b-a3831aec189f">
+      <association-field from="language" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="CourseLocalization" to="Course" caption="idx_f_couse_localization_course" owner-alias="localizations" inverse-alias="course" uuid="d93b3a4c-09df-4e67-b75c-0029a46cd4a8">
+      <association-field from="course" to="id"/>
+    </association>
+    <entity name="Lesson" description="Stores definitions of lessons." uuid="aa9df5ef-4deb-4f48-9c98-71fa50c1ebf0">
+      <field name="id" description="System given id." type="integer" size="10" required="true" unique="true" primary="true" auto-increment="true" uuid="a754ca55-118d-4af6-b0ea-6eea53c87264"/>
+      <field name="date_added" description="Date when the lesson is added." type="datetime" required="true" uuid="3cbd91f1-2b2e-4185-ac77-82b039f7fd95"/>
+      <field name="preview_image" description="Path to preview image." type="text" uuid="7942906b-764c-4837-bff7-98d3beafcf7c"/>
+      <field name="count_files" description="Number of files associated with this lesson." type="integer" size="10" default="0" required="true" uuid="e25377d2-e90a-4e53-a374-6afda8aa64e8"/>
+      <field name="creator" description="Member who has created the lesson." type="integer" size="10" required="true" uuid="7204f31d-df31-4072-b3e4-ad6679da3d02"/>
+      <field name="course" description="Course that lesson belongs to." type="integer" size="10" required="true" uuid="a4a56b53-e3fb-4fd3-a197-86e86aa71862"/>
+      <field name="score_to_pass" description="Quiz score to pass the lesson." type="decimal" size="5" default="0.6" required="true" uuid="67deeff3-50ae-4e8b-8ac4-60e0adff9ba9"/>
+      <field name="time_to_finish" description="Time to finish the quiz for this lesson." type="integer" size="5" default="500" required="true" uuid="f9f6402b-28e7-4da1-b4f7-e15f87e8165c"/>
+      <field name="number_of_questions" description="Number of questions to be shown in quiz." type="integer" size="2" default="0" required="true" uuid="f34205a2-2638-4edb-b131-0360f1ebf75c"/>
+      <index name="idx_u_lesson_id" unique="true">
+        <index-field name="id"/>
+      </index>
+      <index name="idx_n_lesson_date_added">
+        <index-field name="date_added"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="export-file-name">Lesson.php</attribute>
+        <attribute name="table">lesson</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="Lesson" to="Course" caption="ifx_f_lesson_course" owner-alias="lessons" inverse-alias="course" uuid="ebbd7920-39d2-411f-a771-7bb14ea13862">
+      <association-field from="course" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="Lesson" to="Member" caption="idx_f_lesson_localization_creator" inverse-alias="member" uuid="b5ec8f06-46b0-4d77-8e61-c1df7db7414d">
+      <association-field from="creator" to="id"/>
+    </association>
+    <entity name="LessonLocalization" description="Stores localized values of lessons." uuid="178e8f77-d022-4ba2-acfa-20e1b70d883c">
+      <field name="lesson" description="Localized lesson" type="integer" size="10" required="true" primary="true" uuid="bf74c230-74ff-464f-8664-8dfd58609831"/>
+      <field name="language" description="Localization language." type="integer" size="5" required="true" primary="true" uuid="7b08e404-2f4d-4f43-bba7-eb9b8cee24bf"/>
+      <field name="name" description="Localized name of lesson." type="string" size="155" required="true" uuid="c0078c12-b13c-4b24-8f56-e7091ab6eea7"/>
+      <field name="url_key" description="Localized url string of lesson." type="string" size="255" required="true" uuid="f82373d0-2f98-40a1-b3d3-ba0c4f6772d1"/>
+      <field name="description" description="Short description of the lesson." type="text" required="true" uuid="3b3aa10a-8849-4965-b6ef-0f7038097d31"/>
+      <index name="idx_u_lesson_localization" unique="true">
+        <index-field name="lesson"/>
+        <index-field name="language"/>
+      </index>
+      <index name="idx_u_lesson_localization_url_key" unique="true">
+        <index-field name="language"/>
+        <index-field name="url_key"/>
+      </index>
+    </entity>
+    <association from="LessonLocalization" to="Language" caption="idx_f_lesson_localization_language" inverse-alias="language" uuid="ac3ca48a-fc8c-4890-b36a-0505c7f867e6">
+      <association-field from="language" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="LessonLocalization" to="Lesson" caption="idx_f_lesson_localization_lesson" owner-alias="localizations" inverse-alias="lesson" uuid="ed5c8500-8d8f-4dd9-b6de-fc06eae497cd">
+      <association-field from="lesson" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="FilesOfLesson" description="Tracks files that belongs to lessons." uuid="9241fe72-a238-4ecc-87ae-df1ac79bd510">
+      <field name="file" type="integer" size="15" required="true" uuid="4c624d44-f273-43a1-9e13-5a7b60a78190"/>
+      <field name="lesson" description="Associated lesson." type="integer" size="10" required="true" primary="true" uuid="b29203d5-a08e-4a97-8d08-5756bba22b36"/>
+      <field name="language" description="Language of file." type="integer" size="5" required="true" uuid="30612d13-0971-4832-b844-7c6fff376715"/>
+      <field name="date_added" description="Date when the associateion is created." type="datetime" required="true" uuid="b708ee76-7f1f-4f81-ab29-ebcad942b7f0"/>
+      <field name="sort_order" description="Custom sort order." type="integer" size="10" default="1" required="true" uuid="2ed8ff6b-8998-4819-9bfd-84e0069e1042"/>
+      <index name="idx_u_files_of_lesson" unique="true">
+        <index-field name="lesson"/>
+      </index>
+      <index name="idx_n_files_of_lesson_date_added">
+        <index-field name="date_added"/>
+      </index>
+    </entity>
+    <association from="FilesOfLesson" to="File" caption="idx_f_files_of_lesson_file" inverse-alias="file" uuid="601f8975-1273-41c1-9693-16d5fa4830e3">
+      <association-field from="file" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="FilesOfLesson" to="Lesson" caption="idx_f_files_of_lesson_lesson" inverse-alias="lesson" uuid="03d2e968-1a93-462d-bc2c-eece0b8ae55c">
+      <association-field from="lesson" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="FilesOfLesson" to="Language" caption="idx_f_files_of_lesson_language" inverse-alias="language" uuid="a26fc71f-d8fd-4073-9bb2-b9db99da9020">
+      <association-field from="language" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="CoursesOfMember" description="Associates courses with members." uuid="73a6680c-bc15-4ed9-b287-9abe712256d4">
+      <field name="member" description="Member who joined the course." type="integer" size="10" required="true" primary="true" uuid="e6e9c218-bc0a-4c46-b76d-396b6348f132"/>
+      <field name="course" description="Course that was joined by member." type="integer" size="10" required="true" primary="true" uuid="0e55c68c-bf3f-46c0-8bdd-fa5b584b8df5"/>
+      <field name="date_joined" description="Date when the member joined the course." type="datetime" required="true" uuid="29d2f0f5-e83a-42b4-bf15-38c5ca339d27"/>
+      <field name="date_completed" description="Date when the cours is completed by member." type="datetime" uuid="aebaab20-667b-44c1-9ea7-3ccb545b4c49"/>
+      <field name="status" description="j: joined, p: passed, n: not started" type="string" size="1" default="j" required="true" uuid="9572687a-44d2-4273-a836-61b85c5ef4f5"/>
+      <field name="total_score" description="Total score accumulated." type="decimal" size="5" default="0" required="true" uuid="8a6d030d-a871-4c4d-8b92-7ddbc355dbb5"/>
+      <index name="idx_u_courses_of_member" unique="true">
+        <index-field name="member"/>
+        <index-field name="course"/>
+      </index>
+      <index name="idx_n_courses_of_member_date_joined">
+        <index-field name="date_joined"/>
+      </index>
+      <index name="idx_n_courses_of_member_date_completed">
+        <index-field name="date_completed"/>
+      </index>
+      <orm-attributes>
+        <attribute name="table">courses_of_member</attribute>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="export-file-name">CoursesOfMember.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="CoursesOfMember" to="Member" caption="idx_f_courses_of_member_member" inverse-alias="member" uuid="1d11b507-43e1-4a05-a1dc-e18d904f4676">
+      <association-field from="member" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="CoursesOfMember" to="Course" caption="idx_f_courses_of_member_course" inverse-alias="course" uuid="8dad07dd-2c53-4c7a-b555-067530254e30">
+      <association-field from="course" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="LessonsOfMember" description="Tracks which lessons a member has taken." uuid="85500348-9dcf-41b1-a421-6be721992fd8">
+      <field name="member" description="Member who has taken the lesson." type="integer" size="10" required="true" primary="true" uuid="b0db0378-fb75-4817-8b18-1d2e606dd2a2"/>
+      <field name="lesson" description="Lesson that is taken by member." type="integer" size="10" required="true" primary="true" uuid="4b28505a-be9a-43a6-9e44-75858127f466"/>
+      <field name="date_joined" description="Date when the member has first joined the lesson." type="datetime" required="true" uuid="248b6e6a-de99-4da3-9e9f-349bc83277e2"/>
+      <field name="date_completed" description="Date when the member has completed the lesson." type="datetime" uuid="5514455b-bdd0-43f1-9352-5a51542d8c59"/>
+      <field name="score" description="Last passing score of the member." type="decimal" size="5" default="0" required="true" uuid="5fe0e6d2-6f77-43a5-bac8-0ca98f4722f9"/>
+      <field name="status" description="j: joined, p: passed, f:failed, n not yet joined" type="string" size="1" default="j" required="true" uuid="6a8d50f6-f1dc-4a79-82bf-fbd2ba49f0e5"/>
+      <index name="idx_u_lessons_of_member" unique="true">
+        <index-field name="member"/>
+        <index-field name="lesson"/>
+      </index>
+      <index name="idx_n_lessons_of_member_date_joined">
+        <index-field name="date_joined"/>
+      </index>
+      <index name="idx_n_lessons_of_member_date_completed">
+        <index-field name="date_completed"/>
+      </index>
+    </entity>
+    <association from="LessonsOfMember" to="Lesson" caption="idx_f_lessons_of_member_lesson" inverse-alias="lesson" uuid="b6ea975d-96b6-442b-b905-7cc42a661c78">
+      <association-field from="lesson" to="id"/>
+    </association>
+    <association from="LessonsOfMember" to="Member" caption="idx_f_lessons_of_member_member" inverse-alias="member" uuid="0afcc903-1d29-467c-aa66-701faa326ff9">
+      <association-field from="member" to="id"/>
+    </association>
+    <entity name="Quiz" description="Stores definitions of quizes." uuid="e97869fc-5b1e-4e8f-8bd8-7bcd3254193a">
+      <field name="id" description="System given id." type="integer" size="10" required="true" unique="true" primary="true" auto-increment="true" uuid="c6d9c31d-d025-46c0-bdc6-3082f7f481f4"/>
+      <field name="date_created" description="Date when the quiz is created." type="datetime" required="true" uuid="5fd81c8b-b74e-4a51-8d1f-6e34165900c6"/>
+      <field name="count_questions" description="Number of questions in quiz." type="integer" size="5" default="0" required="true" uuid="40b9df28-655a-44e5-be46-74c5aef962b7"/>
+      <field name="time_spent" description="Total time spent to finish the quiz." type="integer" size="5" default="0" required="true" uuid="06282c07-635b-4ec8-97bf-ede09afab9d9"/>
+      <field name="course" description="Course that quiz belongs to." type="integer" size="10" required="true" uuid="8c84411b-8d14-4921-8ebe-1bc7600f0bfa"/>
+      <field name="lesson" description="lesson that quiz belongs to." type="integer" size="10" required="true" uuid="0e9a68d1-08ab-4575-bf19-44a7085d40fa"/>
+      <field name="member" description="Member who took the quiz." type="integer" size="10" required="true" uuid="0c949d47-1664-435c-99d0-18e439d7a998"/>
+      <field name="score" description="Member's calculated score." type="decimal" size="5" default="0" required="true" uuid="b93962b5-c538-4191-8034-269169a0e394"/>
+      <index name="idx_u_quiz_id" unique="true">
+        <index-field name="id"/>
+      </index>
+      <index name="idx_n_quiz_date_created">
+        <index-field name="date_created"/>
+      </index>
+      <orm-attributes>
+        <attribute name="table">quiz</attribute>
+        <attribute name="export-file-name">Quiz.php</attribute>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+      </orm-attributes>
+    </entity>
+    <association from="Quiz" to="Course" caption="idx_f_quiz_course" owner-alias="quizes" inverse-alias="course" uuid="2eca6add-c8ef-4aa8-b3f5-5022af76b7e7">
+      <association-field from="course" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="Quiz" to="Lesson" caption="idx_f_quiz_lesson" owner-alias="quizes" inverse-alias="lesson" uuid="e3e089f5-2c68-4e95-938e-661582716218">
+      <association-field from="lesson" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="Quiz" to="Member" caption="idx_f_quiz_member" inverse-alias="member" uuid="6be8418f-7cbb-42e6-884b-d17feeccdd61">
+      <association-field from="member" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="Question" description="Stores questions." uuid="9cd9240a-b7a5-4a0b-95a8-a0c61e8c74f9">
+      <field name="id" description="System given id." type="integer" size="10" required="true" unique="true" primary="true" auto-increment="true" uuid="da520046-992e-4063-8f82-c4e6c04b9f06"/>
+      <field name="date_added" description="Date when the question is added." type="datetime" required="true" uuid="5b69c8fe-6a7c-49ab-84b0-6c3787ab3267"/>
+      <field name="correct_answer" description="Correct answer to the question." type="integer" size="15" required="true" uuid="9d2a0848-b755-4265-9670-7c7c463ad9a4"/>
+      <field name="type" description="s:single select, m:multi select" type="string" size="1" default="s" required="true" uuid="945bef9f-3ec1-4f85-b568-4db4f7b76d47"/>
+      <field name="lesson" description="Lesson that question belongs to." type="integer" size="10" required="true" uuid="b4a8f439-6ce1-4037-a260-09e62036786b"/>
+      <index name="idx_u_question_id" unique="true">
+        <index-field name="id"/>
+      </index>
+      <index name="idx_n_question_date_added">
+        <index-field name="date_added"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">question</attribute>
+        <attribute name="export-file-name">Question.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="Question" to="Lesson" caption="idx_f_question_lesson" owner-alias="questions" inverse-alias="lesson" uuid="65bd2f00-b28c-4a7e-8bac-4c9fc559f004">
+      <association-field from="lesson" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="Question" to="Answer" caption="idx_f_question_answer" owner-alias="questions" inverse-alias="correct_answer" uuid="c6fbc54e-07b4-42dc-a13f-2e7021411461">
+      <association-field from="correct_answer" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">RESTRICT</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="QuestionLocalization" description="Holds localization values of questions." uuid="c3d423ae-700e-46b7-8d73-85dd2c390912">
+      <field name="question" description="Question to be localized." type="integer" size="10" required="true" primary="true" uuid="3f0c059b-50a7-4f0d-b618-b5d74e73e123"/>
+      <field name="language" description="Localization language." type="integer" size="5" required="true" primary="true" uuid="dfd9620c-fea9-4ebe-a9b3-fe0b951fd5fb"/>
+      <field name="name" description="Question content." type="string" size="155" required="true" uuid="17350fdb-4426-49c1-8e8b-b55da5538de8"/>
+      <field name="url_key" description="Question url key." type="string" size="255" required="true" uuid="e1168dc9-d10e-4897-b573-130dd3180f82"/>
+      <index name="idx_u_question_localization" unique="true">
+        <index-field name="question"/>
+        <index-field name="language"/>
+      </index>
+      <index name="idx_u_question_localization_url_key" unique="true">
+        <index-field name="language"/>
+        <index-field name="url_key"/>
+      </index>
+      <orm-attributes>
+        <attribute name="table">question_localization</attribute>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="export-file-name">QuestionLocalization.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="QuestionLocalization" to="Language" caption="idx_f_question_localization_language" inverse-alias="language" uuid="55030c5b-b329-41cb-bd46-69e1029ff1da">
+      <association-field from="language" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="QuestionLocalization" to="Question" caption="idx_f_question_localization_question" owner-alias="localizations" inverse-alias="question" uuid="1bc3f5c0-4fe4-46cf-8725-7d4ded81aa5b">
+      <association-field from="question" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="Answer" description="Stores answers to questions." uuid="acfdccff-180a-4698-93d2-5ccb732713c6">
+      <field name="id" description="System given id." type="integer" size="15" required="true" unique="true" primary="true" auto-increment="true" uuid="6328342b-7fb5-451a-afaa-1b4323ad187c"/>
+      <field name="question" description="Question that answer belongs to." type="integer" size="10" required="true" uuid="9c9a956a-003f-43e2-85ca-464d07389c3a"/>
+      <field name="date_added" description="Date when the answer is added to question." type="datetime" required="true" uuid="68fcdefb-611b-43ce-9691-bd0edc07e36b"/>
+      <index name="idx_u_answer_id" unique="true">
+        <index-field name="id"/>
+      </index>
+      <index name="idx_n_answer_date_added">
+        <index-field name="date_added"/>
+      </index>
+      <orm-attributes>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">ut8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="table">answer</attribute>
+        <attribute name="export-file-name">Answer.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="Answer" to="Question" caption="idx_f_answer_question" owner-alias="answers" inverse-alias="question" uuid="c471b185-afb2-4b14-9721-d8479f705d35">
+      <association-field from="question" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="AnswerLocalization" description="Holds localization values of answers." uuid="c35e7e07-6af9-469d-b0ce-cd9117e8fdd8">
+      <field name="answer" description="Localized answer." type="integer" size="15" required="true" primary="true" uuid="3c410621-31fd-49df-9449-13fe7fe1c28d"/>
+      <field name="language" description="Localization language." type="integer" size="5" required="true" primary="true" uuid="7cb69855-b0c7-41b1-90be-bc74f7ee2d29"/>
+      <field name="name" description="Answer content." type="string" size="155" required="true" uuid="97db1f8f-3051-4496-a4ce-cc56d124fa5b"/>
+      <field name="url_key" description="Answe url key." type="string" size="255" required="true" uuid="01119bbf-d64c-4dda-aa68-10af5e1c862a"/>
+      <index name="idx_u_answer_localization" unique="true">
+        <index-field name="answer"/>
+        <index-field name="language"/>
+      </index>
+      <index name="idx_u_answer_localization_url_key" unique="true">
+        <index-field name="language"/>
+        <index-field name="url_key"/>
+      </index>
+      <orm-attributes>
+        <attribute name="table">answer_localization</attribute>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+          <attribute name="engine">innodb</attribute>
+        </attribute>
+        <attribute name="export-file-name">AnswerLocalization.php</attribute>
+      </orm-attributes>
+    </entity>
+    <association from="AnswerLocalization" to="Answer" caption="idx_f_answer_localization_answer" owner-alias="localizations" inverse-alias="answer" uuid="e9774e0e-0838-4a92-b90d-408d74f4a0ac">
+      <association-field from="answer" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="AnswerLocalization" to="Language" caption="idx_f_answer_localization_language" inverse-alias="language" uuid="44ec65d0-7fbe-4741-bc04-264c7f981a11">
+      <association-field from="language" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <entity name="AnswersOfMemberToQuizQuestions" description="Tracks member answers for each quiz." uuid="8a34c267-f1d3-4290-bf45-7a007fcbdb01">
+      <field name="member" description="Member who answered the question." type="integer" size="10" required="true" primary="true" uuid="b5ede753-79ca-4c98-9149-b2e0ac13bb07"/>
+      <field name="question" description="Question that is answered." type="integer" size="10" required="true" primary="true" uuid="a497cfd1-0815-4673-b8ea-b3a809a1c570"/>
+      <field name="answer" description="Answer that is chosen." type="integer" size="15" required="true" primary="true" uuid="67bff03f-951b-4e6e-b410-dcc933e8e2bb"/>
+      <field name="quiz" description="Quiz that question belongs to." type="integer" size="10" required="true" uuid="f674eeaa-69d9-455b-9393-d250e2645551"/>
+      <index name="idx_u_answers_of_member_to_quiz_questions" unique="true">
+        <index-field name="member"/>
+        <index-field name="question"/>
+        <index-field name="answer"/>
+      </index>
+      <orm-attributes>
+        <attribute name="table">answers_of_member_to_quiz_questions</attribute>
+        <attribute name="export-file-name">AnswersOfMemberToQuizQuestions.php</attribute>
+        <attribute name="options">
+          <attribute name="charset">utf8</attribute>
+          <attribute name="engine">innodb</attribute>
+          <attribute name="collate">utf8_turkish_ci</attribute>
+        </attribute>
+      </orm-attributes>
+    </entity>
+    <association from="AnswersOfMemberToQuizQuestions" to="Answer" caption="idx_f_answers_of_member_to_quiz_questions_answer" inverse-alias="answer" uuid="256ed123-95cf-41b5-b2ad-a63adc0c1284">
+      <association-field from="answer" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="AnswersOfMemberToQuizQuestions" to="Question" caption="idx_f_answers_of_member_to_quiz_questions_question" inverse-alias="question" uuid="24dfffbc-6d93-4694-bb67-7f263a549fe2">
+      <association-field from="question" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="AnswersOfMemberToQuizQuestions" to="Member" caption="idx_f_answers_of_member_to_quiz_questions_member" inverse-alias="member" uuid="b7695b7f-4bda-48db-86fe-34af0da3a26f">
+      <association-field from="member" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <association from="AnswersOfMemberToQuizQuestions" to="Quiz" caption="idx_f_answers_of_member_to_quiz_questions_quiz" inverse-alias="quiz" uuid="703143da-e1a6-428c-b407-c3ad35e72c62">
+      <association-field from="quiz" to="id"/>
+      <orm-attributes>
+        <attribute name="on-delete">CASCADE</attribute>
+      </orm-attributes>
+    </association>
+    <comment caption="ECourseManagementBundlePricing" description="answer: 85 TL&#10;answer_localization: 130 TL&#10;answers_of_member_to_quiz_questions: 180 TL&#10;course: 250 TL&#10;course_localization: 150 TL&#10;courses_of_member: 150 TL&#10;files_of_lesson: 175 TL&#10;lesson: 290 TL&#10;lesson_localization: 130 TL&#10;question: 170 TL&#10;question_localization: 130 TL&#10;quiz: 235 TL&#10;&#10;toplam: 2.085 TL" uuid="970d32a5-0d41-4ad7-af6b-9a9352045c9c"/>
+    <orm-attributes>
+      <attribute name="namespace">BiberLtd\Core\Bundles\ECourseManagementBundle\Entity</attribute>
+      <attribute name="filename-format">entity-name-only</attribute>
+      <attribute name="file-suffix">without-suffix</attribute>
+    </orm-attributes>
+  </module>
+  <visual-data>
+    <entity uuid="10848c12-504b-4a54-b9d1-65c596877cfc" bg-color="4294967295" hdr-color="4292006610" position-x="550" position-y="143" size-x="0" size-x2="110" size-y="0" size-y2="87"/>
+    <entity uuid="178e8f77-d022-4ba2-acfa-20e1b70d883c" bg-color="4294967295" hdr-color="4292006610" position-x="300" position-y="352" size-x="0" size-x2="110" size-y="0" size-y2="87"/>
+    <entity uuid="73a6680c-bc15-4ed9-b287-9abe712256d4" bg-color="4294967295" hdr-color="4292006610" position-x="750" position-y="52" size-x="0" size-x2="136" size-y="0" size-y2="101"/>
+    <entity uuid="85500348-9dcf-41b1-a421-6be721992fd8" bg-color="4294967295" hdr-color="4292006610" position-x="800" position-y="352" size-x="0" size-x2="136" size-y="0" size-y2="101"/>
+    <entity uuid="8a34c267-f1d3-4290-bf45-7a007fcbdb01" bg-color="4294967295" hdr-color="4292006610" position-x="839" position-y="902" size-x="0" size-x2="168" size-y="0" size-y2="73"/>
+    <entity uuid="9241fe72-a238-4ecc-87ae-df1ac79bd510" bg-color="4294967295" hdr-color="4292006610" position-x="550" position-y="502" size-x="0" size-x2="120" size-y="0" size-y2="87"/>
+    <comment uuid="970d32a5-0d41-4ad7-af6b-9a9352045c9c" bg-color="4294948765" position-x="0" position-y="15" size-x="0" size-x2="218" size-y="0" size-y2="200" txt-color="4278190080"/>
+    <entity uuid="9cd9240a-b7a5-4a0b-95a8-a0c61e8c74f9" bg-color="4294967295" hdr-color="4292006610" position-x="100" position-y="752" size-x="0" size-x2="141" size-y="0" size-y2="87"/>
+    <entity uuid="aa9df5ef-4deb-4f48-9c98-71fa50c1ebf0" bg-color="4294967295" hdr-color="4292006610" position-x="100" position-y="352" size-x="0" size-x2="124" size-y="0" size-y2="115"/>
+    <entity uuid="acfdccff-180a-4698-93d2-5ccb732713c6" bg-color="4294967295" hdr-color="4292006610" position-x="472" position-y="768" size-x="0" size-x2="118" size-y="0" size-y2="59"/>
+    <entity uuid="b452d072-4e48-4932-8f9f-d1ec3a658e72" bg-color="4294967295" hdr-color="4292006610" position-x="300" position-y="102" size-x="0" size-x2="142" size-y="0" size-y2="157"/>
+    <entity uuid="c35e7e07-6af9-469d-b0ce-cd9117e8fdd8" bg-color="4294967295" hdr-color="4292006610" position-x="600" position-y="913" size-x="0" size-x2="20" size-y="0" size-y2="20"/>
+    <entity uuid="c3d423ae-700e-46b7-8d73-85dd2c390912" bg-color="4294967295" hdr-color="4292006610" position-x="300" position-y="952" size-x="0" size-x2="113" size-y="0" size-y2="73"/>
+    <module uuid="da1c9014-34a6-4d54-85c8-5de226fc3f68" bg-color="4291231943" size-x="0" size-x2="1100" size-y="-2" size-y2="1152"/>
+    <entity uuid="e97869fc-5b1e-4e8f-8bd8-7bcd3254193a" bg-color="4294967295" hdr-color="4292006610" position-x="700" position-y="652" size-x="0" size-x2="141" size-y="0" size-y2="115"/>
+  </visual-data>
+</skipper>
