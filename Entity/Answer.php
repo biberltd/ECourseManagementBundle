@@ -14,7 +14,7 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\ECourseManagementBundle\Entity;
+namespace BiberLtd\Bundle\ECourseManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Core\CoreLocalizableEntity;
 /** 
@@ -42,7 +42,7 @@ class Answer extends CoreLocalizableEntity
 
     /** 
      * @ORM\OneToMany(
-     *     targetEntity="BiberLtd\Core\Bundles\ECourseManagementBundle\Entity\Question",
+     *     targetEntity="BiberLtd\Bundle\ECourseManagementBundle\Entity\Question",
      *     mappedBy="correct_answer"
      * )
      */
@@ -50,7 +50,7 @@ class Answer extends CoreLocalizableEntity
 
     /** 
      * @ORM\OneToMany(
-     *     targetEntity="BiberLtd\Core\Bundles\ECourseManagementBundle\Entity\AnswerLocalization",
+     *     targetEntity="BiberLtd\Bundle\ECourseManagementBundle\Entity\AnswerLocalization",
      *     mappedBy="answer"
      * )
      */
@@ -58,7 +58,7 @@ class Answer extends CoreLocalizableEntity
 
     /** 
      * @ORM\ManyToOne(
-     *     targetEntity="BiberLtd\Core\Bundles\ECourseManagementBundle\Entity\Question",
+     *     targetEntity="BiberLtd\Bundle\ECourseManagementBundle\Entity\Question",
      *     inversedBy="answers"
      * )
      * @ORM\JoinColumn(name="question", referencedColumnName="id", nullable=false, onDelete="CASCADE")

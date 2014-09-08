@@ -14,7 +14,7 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\ECourseManagementBundle\Entity;
+namespace BiberLtd\Bundle\ECourseManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Core\CoreEntity;
 
@@ -57,19 +57,19 @@ class Quiz extends CoreEntity
     private $score;
 
     /** 
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\ECourseManagementBundle\Entity\Course", inversedBy="quizes")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ECourseManagementBundle\Entity\Course", inversedBy="quizes")
      * @ORM\JoinColumn(name="course", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $course;
 
     /** 
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\ECourseManagementBundle\Entity\Lesson", inversedBy="quizes")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ECourseManagementBundle\Entity\Lesson", inversedBy="quizes")
      * @ORM\JoinColumn(name="lesson", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $lesson;
 
     /** 
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\MemberManagementBundle\Entity\Member")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\MemberManagementBundle\Entity\Member")
      * @ORM\JoinColumn(name="member", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $member;

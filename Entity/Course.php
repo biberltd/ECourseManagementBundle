@@ -14,7 +14,7 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\ECourseManagementBundle\Entity;
+namespace BiberLtd\Bundle\ECourseManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
 use BiberLtd\Core\CoreLocalizableEntity;
 
@@ -77,30 +77,30 @@ class Course extends  CoreLocalizableEntity
 
     /**
      * @ORM\OneToMany(
-     *     targetEntity="BiberLtd\Core\Bundles\ECourseManagementBundle\Entity\CourseLocalization",
+     *     targetEntity="BiberLtd\Bundle\ECourseManagementBundle\Entity\CourseLocalization",
      *     mappedBy="course"
      * )
      */
     protected $localizations;
 
     /**
-     * @ORM\OneToMany(targetEntity="BiberLtd\Core\Bundles\ECourseManagementBundle\Entity\Lesson", mappedBy="course")
+     * @ORM\OneToMany(targetEntity="BiberLtd\Bundle\ECourseManagementBundle\Entity\Lesson", mappedBy="course")
      */
     private $lessons;
 
     /**
-     * @ORM\OneToMany(targetEntity="BiberLtd\Core\Bundles\ECourseManagementBundle\Entity\Quiz", mappedBy="course")
+     * @ORM\OneToMany(targetEntity="BiberLtd\Bundle\ECourseManagementBundle\Entity\Quiz", mappedBy="course")
      */
     private $quizes;
 
     /**
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\MemberManagementBundle\Entity\Member")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\MemberManagementBundle\Entity\Member")
      * @ORM\JoinColumn(name="creator", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $member;
 
     /**
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\SiteManagementBundle\Entity\Site")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\SiteManagementBundle\Entity\Site")
      * @ORM\JoinColumn(name="site", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $site;
