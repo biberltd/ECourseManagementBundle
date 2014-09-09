@@ -1,7 +1,7 @@
 <?php
 /**
  * @name        LessonsOfMember
- * @package		BiberLtd\Core\ECourseManagementBundle
+ * @package		BiberLtd\Bundle\CoreBundle\ECourseManagementBundle
  *
  * @author		Murat Ünal
  *
@@ -14,9 +14,9 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\ECourseManagementBundle\Entity;
+namespace BiberLtd\Bundle\ECourseManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
-use BiberLtd\Core\CoreLocalizableEntity;
+use BiberLtd\Bundle\CoreBundle\CoreLocalizableEntity;
 
 /** 
  * @ORM\Entity
@@ -48,20 +48,20 @@ class Question extends CoreLocalizableEntity
 
     /** 
      * @ORM\OneToMany(
-     *     targetEntity="BiberLtd\Core\Bundles\ECourseManagementBundle\Entity\QuestionLocalization",
+     *     targetEntity="BiberLtd\Bundle\ECourseManagementBundle\Entity\QuestionLocalization",
      *     mappedBy="question"
      * )
      */
     protected $localizations;
 
     /** 
-     * @ORM\OneToMany(targetEntity="BiberLtd\Core\Bundles\ECourseManagementBundle\Entity\Answer", mappedBy="question")
+     * @ORM\OneToMany(targetEntity="BiberLtd\Bundle\ECourseManagementBundle\Entity\Answer", mappedBy="question")
      */
     private $answers;
 
     /** 
      * @ORM\ManyToOne(
-     *     targetEntity="BiberLtd\Core\Bundles\ECourseManagementBundle\Entity\Lesson",
+     *     targetEntity="BiberLtd\Bundle\ECourseManagementBundle\Entity\Lesson",
      *     inversedBy="questions"
      * )
      * @ORM\JoinColumn(name="lesson", referencedColumnName="id", nullable=false, onDelete="CASCADE")
@@ -70,7 +70,7 @@ class Question extends CoreLocalizableEntity
 
     /** 
      * @ORM\ManyToOne(
-     *     targetEntity="BiberLtd\Core\Bundles\ECourseManagementBundle\Entity\Answer",
+     *     targetEntity="BiberLtd\Bundle\ECourseManagementBundle\Entity\Answer",
      *     inversedBy="questions"
      * )
      * @ORM\JoinColumn(name="correct_answer", referencedColumnName="id", nullable=false, onDelete="RESTRICT")

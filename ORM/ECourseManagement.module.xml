@@ -459,7 +459,7 @@
     </association>
     <comment caption="ECourseManagementBundlePricing" description="answer: 85 TL&#10;answer_localization: 130 TL&#10;answers_of_member_to_quiz_questions: 180 TL&#10;course: 250 TL&#10;course_localization: 150 TL&#10;courses_of_member: 150 TL&#10;files_of_lesson: 175 TL&#10;lesson: 290 TL&#10;lesson_localization: 130 TL&#10;question: 170 TL&#10;question_localization: 130 TL&#10;quiz: 235 TL&#10;&#10;toplam: 2.085 TL" uuid="970d32a5-0d41-4ad7-af6b-9a9352045c9c"/>
     <orm-attributes>
-      <attribute name="namespace">BiberLtd\Core\Bundles\ECourseManagementBundle\Entity</attribute>
+      <attribute name="namespace">BiberLtd\Bundle\ECourseManagementBundle\Entity</attribute>
       <attribute name="filename-format">entity-name-only</attribute>
       <attribute name="file-suffix">without-suffix</attribute>
     </orm-attributes>

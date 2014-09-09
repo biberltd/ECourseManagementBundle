@@ -1,7 +1,7 @@
 <?php
 /**
  * @name        AnswersOfMemberToQuizQuestions
- * @package		BiberLtd\Core\ECourseManagementBundle
+ * @package		BiberLtd\Bundle\CoreBundle\ECourseManagementBundle
  *
  * @author		Murat Ünal
  *
@@ -14,9 +14,9 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\ECourseManagementBundle\Entity;
+namespace BiberLtd\Bundle\ECourseManagementBundle\Entity;
 use Doctrine\ORM\Mapping AS ORM;
-use BiberLtd\Core\CoreEntity;
+use BiberLtd\Bundle\CoreBundle\CoreEntity;
 
 /** 
  * @ORM\Entity
@@ -30,27 +30,27 @@ class AnswersOfMemberToQuizQuestions extends CoreEntity
 {
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\ECourseManagementBundle\Entity\Answer")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ECourseManagementBundle\Entity\Answer")
      * @ORM\JoinColumn(name="answer", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $answer;
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\ECourseManagementBundle\Entity\Question")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ECourseManagementBundle\Entity\Question")
      * @ORM\JoinColumn(name="question", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $question;
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\MemberManagementBundle\Entity\Member")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\MemberManagementBundle\Entity\Member")
      * @ORM\JoinColumn(name="member", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $member;
 
     /** 
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\ECourseManagementBundle\Entity\Quiz")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\ECourseManagementBundle\Entity\Quiz")
      * @ORM\JoinColumn(name="quiz", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $quiz;

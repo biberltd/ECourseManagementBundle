@@ -1,7 +1,7 @@
 <?php
 /**
  * @name        AnswerLocalization
- * @package		BiberLtd\Core\ECourseManagementBundle
+ * @package		BiberLtd\Bundle\CoreBundle\ECourseManagementBundle
  *
  * @author		Murat Ünal
  *
@@ -14,10 +14,10 @@
  * @description Model / Entity class.
  *
  */
-namespace BiberLtd\Core\Bundles\ECourseManagementBundle\Entity;
+namespace BiberLtd\Bundle\ECourseManagementBundle\Entity;
 
 use Doctrine\ORM\Mapping AS ORM;
-use BiberLtd\Core\CoreEntity;
+use BiberLtd\Bundle\CoreBundle\CoreEntity;
 /** 
  * @ORM\Entity
  * @ORM\Table(
@@ -44,7 +44,7 @@ class AnswerLocalization extends CoreEntity
     /** 
      * @ORM\Id
      * @ORM\ManyToOne(
-     *     targetEntity="BiberLtd\Core\Bundles\ECourseManagementBundle\Entity\Answer",
+     *     targetEntity="BiberLtd\Bundle\ECourseManagementBundle\Entity\Answer",
      *     inversedBy="localizations"
      * )
      * @ORM\JoinColumn(name="answer", referencedColumnName="id", nullable=false, onDelete="CASCADE")
@@ -53,7 +53,7 @@ class AnswerLocalization extends CoreEntity
 
     /** 
      * @ORM\Id
-     * @ORM\ManyToOne(targetEntity="BiberLtd\Core\Bundles\MultiLanguageSupportBundle\Entity\Language")
+     * @ORM\ManyToOne(targetEntity="BiberLtd\Bundle\MultiLanguageSupportBundle\Entity\Language")
      * @ORM\JoinColumn(name="language", referencedColumnName="id", nullable=false, onDelete="CASCADE")
      */
     private $language;
